@@ -1,0 +1,50 @@
+﻿@model IEnumerable<DoAnASP.Areas.Admin.Models.Blog>
+
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrap">
+   
+    <div class="main">
+
+        <div class="content">
+            <p>
+                <a asp-action="Create">Thêm Một Blogs Mới</a>
+            </p>
+            @foreach (var item in Model)
+            {@if (item.TrangThai == 1)
+            {
+        <div class="box1">
+
+            <h3>
+                <a asp-action="Details" asp-route-id="@item.IDBlog">@item.TomTat</a>
+                <a asp-action="Details"  asp-route-id="@item.IDBlog"><img src="~/blog/@item.HinhAnh" width="250px" hight="250px"></a>
+            </h3>
+
+        </div>
+                <div class="data">
+                    <p> @item.NoiDung</p>
+                    <span><a href="single.html">Continue reading &gt;&gt;&gt;</a></span>
+                </div>
+                }
+            }
+
+        </div>
+        <div class="page_links">
+            
+           
+            @await Html.PartialAsync("_Loai")
+            <div class="clear"></div>
+            <div class="page_bottom">
+                <p>Back To : <a href="#">Top</a> |  <a href="#">Home</a></p>
+            </div>
+        </div>
+       
+            
+        </div>
+   
+</div>
