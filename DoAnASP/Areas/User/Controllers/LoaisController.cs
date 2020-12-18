@@ -23,7 +23,8 @@ namespace DoAnASP.Areas.User.Controllers
         // GET: User/Loais
         public async Task<IActionResult> Index()
         {
-            var dpLoai = _context.Loais.ToListAsync();
+            ViewBag.a = _context.Blogs;
+            //var dpLoai = _context.Loais.ToListAsync();
             return View(await _context.Loais.ToListAsync());
         }
 
@@ -53,7 +54,7 @@ namespace DoAnASP.Areas.User.Controllers
 
         // POST: User/Loais/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details, see 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IDLoai,TieuDe,NgayTao,IDNguoiTao")] Loai loai)

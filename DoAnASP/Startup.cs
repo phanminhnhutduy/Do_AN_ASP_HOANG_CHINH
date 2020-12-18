@@ -28,7 +28,13 @@ namespace DoAnASP
         {
             services.AddControllersWithViews();
             services.AddDbContext<DpContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DpContext")));
+            services.AddSession(option => {
+                option.IdleTimeout = TimeSpan.FromSeconds(5000);
+                option.Cookie.HttpOnly = true;
+                option.Cookie.IsEssential = true;
+            });
 
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +54,7 @@ namespace DoAnASP
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 
@@ -72,8 +79,13 @@ namespace DoAnASP
                name: "Admin",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
+               name: "User",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
                    name: "default",
-                   pattern: "{controller=Home}/{action=Index}/{id?}");
+                   pattern: "{area=User}/{controller=Login}/{action=Index}/{id?}");
+               
             });
         }
     }

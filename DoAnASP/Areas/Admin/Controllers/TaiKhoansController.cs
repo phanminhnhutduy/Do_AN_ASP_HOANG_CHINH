@@ -9,6 +9,7 @@ using DoAnASP.Areas.Admin.Models;
 using DoAnASP.Areas.User.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using EmptyProject_Test.Areas.Admin.Data;
 
 namespace DoAnASP.Areas.Admin.Controllers
 {
@@ -61,6 +62,7 @@ namespace DoAnASP.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                taiKhoan.Password = StringProcess.CreateMD5Hash(taiKhoan.Password);
                 _context.Add(taiKhoan);
                 await _context.SaveChangesAsync();
                 var parth = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Admin/avatar", taiKhoan.IDTK +"." +

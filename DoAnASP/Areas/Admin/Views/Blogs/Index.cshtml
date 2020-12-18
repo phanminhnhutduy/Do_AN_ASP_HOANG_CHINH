@@ -69,7 +69,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.IDNguoiDuyet)
             </td>
-            @if (item.TrangThai == 1)
+            @if (item.TrangThai == 2)
             {
                 <td>
 
@@ -79,11 +79,14 @@
                     <a asp-action="Delete" asp-route-id="@item.IDBlog">Delete</a>
                 </td>
             }
-            @if (item.TrangThai !=1 )
+            @if (item.TrangThai !=2 )
             {
                 <td>
 
-                    <a asp-action="Edit" asp-route-id="@item.IDBlog">duyệt</a>
+                    <form asp-action="Duyet" method="post">
+                        <input type="hidden" name="id" value="@item.IDBlog" />
+                        <input type="submit"  value="Duyet" />
+                    </form>
                    
                 </td>
             }

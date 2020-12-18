@@ -21,18 +21,14 @@ namespace DoAnASP.Areas.Admin.Controllers
         {
             _context = context;
         }
-
+        
         // GET: Admin/Blogs
         public async Task<IActionResult> Index()
         {
             var dpContext = _context.Blogs.Include(b => b.loai);
             return View(await dpContext.ToListAsync());
         }
-        public async Task<IActionResult> ChoDuyet()
-        {
-            var dpContext = _context.Blogs.Include(b => b.loai);
-            return View(await dpContext.ToListAsync());
-        }
+       
 
         // GET: Admin/Blogs/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -138,6 +134,47 @@ namespace DoAnASP.Areas.Admin.Controllers
             ViewData["IDLoai"] = new SelectList(_context.Loais, "IDLoai", "TieuDe", blog.IDLoai);
             return View(blog);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Duyet(int id)
+        {
+            var duyettrangthai = _context.Blogs.Find(id);
+            duyettrangthai.TrangThai = 2;
+            _context.Update(duyettrangthai);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            //return View(blog);
+        }
+            //if (id != blog.IDBlog)
+            //{
+            //    return NotFound();
+            //}
+
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+            //        _context.Update(blog);
+            //        await _context.SaveChangesAsync();
+            //    }
+            //    catch (DbUpdateConcurrencyException)
+            //    {
+            //        if (!BlogExists(blog.IDBlog))
+            //        {
+            //            return NotFound();
+            //        }
+            //        else
+            //        {
+            //            throw;
+            //        }
+            //    }
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //ViewData["IDLoai"] = new SelectList(_context.Loais, "IDLoai", "TieuDe", blog.IDLoai);
+            
+            
+           
+        
 
         // GET: Admin/Blogs/Delete/5
         public async Task<IActionResult> Delete(int? id)

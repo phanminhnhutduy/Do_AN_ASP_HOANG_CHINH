@@ -9,12 +9,14 @@ using DoAnASP.Areas.Admin.Models;
 using DoAnASP.Areas.User.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace DoAnASP.Areas.User.Controllers
 {
     [Area("User")]
     public class BlogsController : Controller
     {
+        static int i = 0;
         private readonly DpContext _context;
 
         public BlogsController(DpContext context)
@@ -26,13 +28,23 @@ namespace DoAnASP.Areas.User.Controllers
         public async Task<IActionResult> Index()
         {
             var dpContext = _context.Blogs.Include(b => b.loai);
-          
+            ViewBag.Loai = _context.Loais;
+            ViewBag.TaiKhoan = _context.TaiKhoans;
+
+            
+
+            JObject us = JObject.Parse(HttpContext.Session.GetString("user"));
+            ViewBag.UerName = us.SelectToken("Ten").ToString();
+            ViewBag.IDName = us.SelectToken("IDTK").ToString();
+
             return View(await dpContext.ToListAsync());
         }
 
         // GET: User/Blogs/Details/5
         public async Task<IActionResult> Details(int? id)
-        {
+        { i++;
+            HttpContext.Session.SetString("view", i.ToString());
+            
             if (id == null)
             {
                 return NotFound();
@@ -41,17 +53,23 @@ namespace DoAnASP.Areas.User.Controllers
             var blog = await _context.Blogs
                 .Include(b => b.loai)
                 .FirstOrDefaultAsync(m => m.IDBlog == id);
+            blog.View = Int32.Parse(HttpContext.Session.GetString("view"));
+           
             if (blog == null)
             {
                 return NotFound();
             }
-
+           await _context.SaveChangesAsync();
+            ViewBag.Loai = _context.Loais;
             return View(blog);
         }
 
         // GET: User/Blogs/Create
         public IActionResult Create()
         {
+            JObject us = JObject.Parse(HttpContext.Session.GetString("user"));
+          
+            ViewBag.IDName = us.SelectToken("IDTK").ToString();
             ViewData["IDLoai"] = new SelectList(_context.Loais, "IDLoai", "TieuDe");
             return View();
         }

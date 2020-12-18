@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DoAnASP.Areas.Admin.Models;
 using DoAnASP.Areas.User.Data;
+using EmptyProject_Test.Areas.Admin.Data;
 
 namespace DoAnASP.Areas.User.Controllers
 {
@@ -59,10 +60,12 @@ namespace DoAnASP.Areas.User.Controllers
         {
             if (ModelState.IsValid)
             {
+                taiKhoan.Password = StringProcess.CreateMD5Hash(taiKhoan.Password);
                 _context.Add(taiKhoan);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(taiKhoan);
         }
 

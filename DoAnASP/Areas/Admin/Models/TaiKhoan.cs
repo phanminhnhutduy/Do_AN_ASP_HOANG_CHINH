@@ -15,7 +15,10 @@ namespace DoAnASP.Areas.Admin.Models
         public string HinhAnh { get; set; }
         public int Quyen { get; set; }
         public int TrangThai { get; set; }
-
+        public TaiKhoan() {
+            Quyen = 1;
+            TrangThai = 0;
+        }
       
     }
 }
